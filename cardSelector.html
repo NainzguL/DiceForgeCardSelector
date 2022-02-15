@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="">
+	<head>
+		<meta charset="utf-8">
+		<title>Dice Forge Card Selector</title>
+	</head>
+	<body>
+		<header></header>
+		<main>
+			<div>
+				<div>
+					Jouer avec le mode :
+					<select id="mode">
+						<option value="standard">Standard</option>
+						<option value="goddess">Déesse</option>
+						<option value="titan">Titan</option>
+					</select>
+				</div>
+				<div>
+					Utiliser les cartes du/des set(s) :
+					<label><input type="checkbox" id="standard" checked="checked"/>Standard</label>
+					<label><input type="checkbox" id="advanced"/>Avancé</label>
+					<label><input type="checkbox" id="goddess" />Déesse</label>
+					<label><input type="checkbox" id="titan" />Titan</label>
+				</div>
+				<input type="button" value="Tirer au sort" onclick="javascript:getCards()"/>
+			</div>
+			<table border>
+				<tr class="lunar">
+					<td id="1L1"></td>
+					<td id="1L2"></td>
+					<td id="2L"></td>
+					<td id="3L"></td>
+					<td id="4L"></td>
+					<td id="5L"></td>
+					<td id="6L"></td>
+				</tr>
+				<tr class="both">
+					<td colspan="7"></td>
+					<td id="5L5F"></td>
+				</tr>
+				<tr class="fire">
+					<td id="1F1"></td>
+					<td id="1F2"></td>
+					<td id="2F"></td>
+					<td id="3F"></td>
+					<td id="4F"></td>
+					<td id="5F"></td>
+					<td id="6F"></td>
+				</tr>
+			</table>
+		</main>
+		<footer></footer>
+		<script type="text/javascript">
+let baseSet = {
+	'1L1' : 'Le Marteau du forgeron',
+	'1L2' : 'Le coffre du forgeron',
+	'2L' : 'Les sabots d\'argent',
+	'3L' : 'Les satyres',
+	'4L' : 'Le passeur',
+	'5L' : 'Le casque d\'invisibilité',
+	'6L' : 'La pince',
+	'5L5F' : 'L\'hydre',
+	'6F' : 'L\'énigme',
+	'5F' : 'Le miroir abyssal',
+	'4F' : 'La méduse',
+	'3F' : 'Le minotaure',
+	'2F' : 'Les ailes de la gardienne',
+	'1F2' : 'Les herbes folles',
+	'1F1' : 'L\'ancien',
+};
+
+let advancedSet = {
+	'2L' : 'La grande ourse',
+	'3L' : 'Le sanglier acharné',
+	'4L' : 'Le cerbère',
+	'6L' : 'La sentinelle',
+	'5L5F' : 'Le typhon',
+	'6F' : 'Le cyclope',
+	'4F' : 'Le triton',
+	'3F' : 'Le bouclier de la gardienne',
+	'2F' : 'La voile céleste',
+};
+
+let goddessSet = {
+	'1L1' : 'Les jumeaux',
+	'1L2' : 'Le compagnon',
+	'3L' : 'Le dé céleste',
+	'4L' : 'Les brumes',
+	'6L' : 'La nuit éternelle',
+	'5L5F' : 'La déesse',
+	'6F' : 'Le feu éternel',
+	'5F' : 'Le trident abyssal',
+	'4F' : 'L\'orfèvre',
+	'1F2' : 'La nymphe des bois',
+	'1F1' : 'L\'arbre',
+};
+
+let goddessExt = {
+	'2L' : 'Le golem lunaire',
+	'5L' : 'Le grand golem',
+	'3F' : 'Le golem du temps',
+	'2F' : 'Le golem solaire',
+};
+
+let titanSet = {
+	'1L1' : 'Le sceptre du forgeron',
+	'3L' : 'Le vent',
+	'4L' : 'L\'ancêtre',
+	'6L' : 'La main droite',
+	'5L5F' : 'Le premier titan',
+	'6F' : 'La main gauche',
+	'4F' : 'L\'omniscient',
+	'3F' : 'La lumière',
+	'1F1' : 'Le marchand',
+};
+
+let titanExt = {
+	'1L2' : 'La mémoire',
+	'2L' : 'L\'oracle',
+	'5L' : 'Le chaos',
+	'5F' : 'Le reflet d\'infortune',
+	'2F' : 'Le gardien',
+	'1F2' : 'L\'opiniâtre',
+};
+
+function addCardSet(finalSet, checkboxName, cardSet){
+	if(document.getElementById(checkboxName).checked){
+		console.log('Add ' + checkboxName + ' in final Set');
+		for(let pile in cardSet){
+			finalSet[pile].push(cardSet[pile]);
+		}
+	}
+}
+
+function setModeSet(finalSet, cardSetName, cardSet){
+	console.log('Use ' + cardSetName + ' Extension');
+	for(let pile in cardSet){
+		finalSet[pile] = [cardSet[pile]];
+	}
+}
+
+function getCards(){
+	let finalSet = {
+		'1L1' : [],
+		'1L2' : [],
+		'2L' : [],
+		'3L' : [],
+		'4L' : [],
+		'5L' : [],
+		'6L' : [],
+		'5L5F' : [],
+		'6F' : [],
+		'5F' : [],
+		'4F' : [],
+		'3F' : [],
+		'2F' : [],
+		'1F2' : [],
+		'1F1' : [],
+	};
+	
+	//Setup pilesaddCardSet
+	addCardSet(finalSet, 'standard', baseSet)
+	addCardSet(finalSet, 'advanced', advancedSet)
+	addCardSet(finalSet, 'goddess', goddessSet)
+	addCardSet(finalSet, 'titan', titanSet)
+
+	//Extension
+	let setToUse = document.getElementById("mode");
+	switch(setToUse.value){
+		case 'goddess':
+			setModeSet(finalSet, 'goddess', goddessExt);
+			break;
+		case 'titan':
+			setModeSet(finalSet, 'goddess', goddessExt);
+			for(let pile in titanExt){
+				finalSet[titanExt[pile]] = ['titan'];
+			}
+			break;
+	}
+
+	//Drawing
+	for(let pile in finalSet){
+		let pileSize = finalSet[pile].length;
+		if(pileSize <= 0){
+			document.getElementById(pile).innerText = 'Error';
+		} else if(pileSize == 1){
+			document.getElementById(pile).innerText = finalSet[pile][0];
+		} else {
+			document.getElementById(pile).innerText = finalSet[pile][Math.floor(Math.random()*pileSize)];
+		}
+	}
+
+}
+
+		</script>
+	</body>
+</html>
