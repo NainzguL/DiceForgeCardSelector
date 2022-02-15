@@ -172,10 +172,7 @@ function getCards(){
 			setModeSet(finalSet, 'goddess', goddessExt);
 			break;
 		case 'titan':
-			setModeSet(finalSet, 'goddess', goddessExt);
-			for(let pile in titanExt){
-				finalSet[titanExt[pile]] = ['titan'];
-			}
+			setModeSet(finalSet, 'titan', titanExt);
 			break;
 	}
 
@@ -190,9 +187,7 @@ function getCards(){
 			document.getElementById(pile).innerText = finalSet[pile][Math.floor(Math.random()*pileSize)];
 		}
 	}
-
 }
-
 		</script>
 	</body>
 </html>
